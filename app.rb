@@ -32,7 +32,7 @@ include Format
   end
 
   def serve_request(params)  
-    msg = Time.now.strftime(params.join('-')).to_s if params !=nil
+    msg = Time.now.strftime(params.join('-')).to_s
     response(msg, 200,{ "Content-Type" => "text/plain" })  
     
   end
