@@ -8,6 +8,7 @@ module Format
                      'second'=> '%S'}.freeze
 
   def has_format?(params)
+    puts "LOG: has_format? started params #{params}"
     true if params.key?("format") && params["format"].size>0
   end
 
@@ -24,7 +25,7 @@ module Format
   end
 
   def find_difference(arr)
-    arr - CORRECT_FORMAT
+    arr - DATE_DIRECTIVES.to_a
   end
 
   def set_date_directives(params)
