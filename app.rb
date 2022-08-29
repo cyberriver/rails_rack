@@ -1,28 +1,34 @@
 require 'rack'
+require_relative 'time_formatter'
+
 class App
 
   def call(env)
     request = Rack::Request.new(env)
-    serve_request(request)
+    #filtering request by incorrect parameters
+    if request.params != {}
+      time_formatter = TimeFormatter.new(request)            
+      if time_formatter.invalid?
+        response(time_formatter.call,404,headers)
+      else 
+        reponse(time_formatter.call,200,headers)
+      end
+    else      
+      response("Request has no parameters"+"\n", 400, headers)    
+    end
+
   end
 
   private
-
-  def serve_request
-    [status, headers, body]
-  end
-
-  def status
-    200
-  end
-
+  #filtering request by incorrect parameters
   def headers
-    {'Content-Type'=>'text/plain'}
+    { "Content-Type" => "text/plain" }    
   end
 
-  def body
-    ["Welcome aboard!\n"]
+  def response (body, status, headers)
+    Rack::Response.new(
+      body, status, headers
+    ).finish
   end
-
 
 end
